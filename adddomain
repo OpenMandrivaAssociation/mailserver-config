@@ -1,0 +1,32 @@
+if ! grep -qE "^$D\s+.*" /etc/postfix/domains; then
+	echo "$D #$U" >>/etc/postfix/domains
+	postmap /etc/postfix/domains
+	cat >/etc/nginx/sites-available/$D.conf <<EOF
+server {
+	listen 80;
+	server_name $D;
+	include sogo.conf;
+}
+EOF
+	if ! [ -d /etc/letsencrypt/live/$D ]; then
+		if [ "$(echo $D |cut -d. -f1)" = "mail" ]; then
+			certbot -d $D
+		else
+			certbot -d $D -d mail.$D
+		fi
+	fi
+	echo "$D /etc/letsencrypt/live/$D/privkey.pem /etc/letsencrypt/live/$D/fullchain.pem" >>/etc/postfix/vmail_ssl.map
+	postmap -F /etc/postfix/vmail_ssl.map
+	cat >/etc/dovecot/sni.d/$D.conf <<EOF
+local_name "$D *.$D" {
+	ssl_cert = </etc/letsencrypt/live/$D/fullchain.pem
+	ssl_key = </etc/letsencrypt/live/$D/privkey.pem
+}
+EOF
+	if ! [ -e /etc/dovecot/sni.d/fallback.conf ]; then
+		cat >/etc/dovecot/sni.d/fallback.conf <<EOF
+ssl_cert = </etc/letsencrypt/live/$D/fullchain.pem
+ssl_key = </etc/letsencrypt/live/$D/privkey.pem
+EOF
+	fi
+fi

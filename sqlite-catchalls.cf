@@ -1,0 +1,2 @@
+dbpath=/srv/mail/users.db
+query=SELECT c_uid FROM users WHERE c_uid='%s'

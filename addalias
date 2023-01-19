@@ -1,0 +1,13 @@
+#!/bin/sh
+# Syntax: addalias from@virtual.address to@real.address
+[ "$#" = 2 ] || exit 1
+echo $1 |grep -q @ || exit 2
+echo $2 |grep -q @ || exit 2
+D=`echo $1|cut -d@ -f2`
+. /usr/libexec/vmail/mail.common
+
+echo "INSERT INTO aliases(source,destination) VALUES('$1','$2');" |$DB_CMD
+
+. /usr/libexec/vmail/adddomain
+
+. /usr/libexec/vmail/mail.cleanup

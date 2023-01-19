@@ -1,0 +1,5 @@
+user=mailro
+password=@DBPASS@
+hosts=127.0.0.1
+dbname=mail
+query=SELECT destination FROM aliases WHERE source='%s'

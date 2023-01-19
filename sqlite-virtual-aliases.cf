@@ -1,0 +1,2 @@
+dbpath=/srv/mail/users.db
+query=SELECT destination FROM aliases WHERE source='%s'

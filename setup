@@ -1,0 +1,81 @@
+#!/bin/sh
+MAIL_DBROOT=true
+. /usr/libexec/vmail/mail.common
+
+case "$DATABASE" in
+postgres)
+	INIT="CREATE DATABASE mail;
+CREATE USER mail WITH ENCRYPTED PASSWORD '$DBPASS';
+CREATE USER mailro WITH ENCRYPTED PASSWORD '$DBPASS';
+GRANT ALL PRIVILEGES ON DATABASE mail TO mail;
+CREATE DATABASE sogo;
+CREATE USER sogo WITH ENCRYPTED PASSWORD 'ogos';
+GRANT ALL PRIVILEGES ON DATABASE sogo TO sogo;
+\c mail postgres
+GRANT ALL ON SCHEMA public TO mail;
+\c sogo postgres
+GRANT ALL ON SCHEMA public TO sogo;
+\c mail postgres"
+	POSTINIT="GRANT ALL PRIVILEGES ON users TO mail;
+GRANT ALL PRIVILEGES ON aliases TO mail;
+GRANT SELECT ON users TO mailro;
+GRANT SELECT ON aliases TO mailro;"
+	;;
+mysql)
+	# FIXME reduce mailro privileges akin to postgres
+	INIT="CREATE DATABASE mail;
+CREATE DATABASE sogo;
+USE sogo;
+GRANT ALL PRIVILEGES ON * TO 'sogo'@'localhost' IDENTIFIED BY 'ogos';
+USE mail;
+GRANT ALL PRIVILEGES ON * TO 'mail'@'localhost' IDENTIFIED BY '$DBPASS';
+GRANT ALL PRIVILEGES ON * TO 'mailro'@'localhost' IDENTIFIED BY '$DBPASS';"
+	;;
+sqlite)
+	;;
+*)
+	echo "Unsupported database type $DATABASE"
+	exit 1
+esac
+
+echo "
+$INIT
+CREATE TABLE users(
+	c_uid VARCHAR(128) NOT NULL PRIMARY KEY,
+	c_name VARCHAR(128) NOT NULL,
+	c_password VARCHAR(64) NOT NULL,
+	c_cn VARCHAR(128),
+	mail VARCHAR(128) NOT NULL,
+	domain VARCHAR(128),
+	globaladmin BOOLEAN DEFAULT FALSE,
+	domainadmin BOOLEAN DEFAULT FALSE
+);
+CREATE TABLE aliases(
+	source VARCHAR(128) NOT NULL PRIMARY KEY,
+	destination VARCHAR(1024) NOT NULL
+);
+$POSTINIT
+" |$DB_CMD
+
+sed -i -e "s,^password=.*,password=$DBPASS,;s,^password =.*,password = $DBPASS," /etc/postfix/sql-*.cf
+sed -i -E "s,^(connect.*password=)(.*),\1$DBPASS," /etc/dovecot/conf.d/dovecot-sql.conf.ext
+sed -i -E "s,(viewURL.*mail:).*(@localhost.*),\1$DBPASS\2," /etc/sogo/sogo.conf
+sed -i -E "s,(.*[=,])([[:space:]]*)([a-zA-Z]*)(:/etc/postfix/sql-.*),\1$SHORTDB\4,g" /etc/postfix/main.cf
+
+systemctl stop sogo
+systemctl stop postfix
+systemctl stop dovecot
+systemctl stop rspamd
+
+systemctl enable --now redis
+systemctl enable --now clamav-daemon
+systemctl enable --now clamav-freshclam
+systemctl enable --now rspamd
+systemctl enable --now memcached@11211
+systemctl enable --now dovecot
+systemctl enable --now postfix
+systemctl enable --now sogo
+systemctl enable --now nginx
+systemctl enable certbot-renew.timer
+
+. /usr/libexec/vmail/mail.cleanup

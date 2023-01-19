@@ -1,0 +1,2 @@
+unset PGPASSWORD
+unset DBPASS

@@ -1,0 +1,17 @@
+#!/bin/sh
+MAIL_DBROOT=true
+. /usr/libexec/vmail/mail.common
+
+systemctl stop sogo
+systemctl stop postfix
+systemctl stop dovecot
+
+if [ "$DATABASE" = "sqlite" ]; then
+	rm /srv/mail/users.db
+elif [ "$DATABASE" = "mysql" ]; then
+	echo "DROP DATABASE mail; DROP DATABASE sogo;" |$DB_CMD
+elif [ "$DATABASE" = "postgres" ]; then
+	echo "DROP DATABASE mail; DROP USER mail; DROP USER mailro; DROP DATABASE sogo; DROP USER sogo;" |$DB_CMD
+fi
+
+. /usr/libexec/vmail/mail.cleanup

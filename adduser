@@ -1,0 +1,24 @@
+#!/bin/sh
+# Syntax: adduser "Real Name" user@domain password
+[ "$#" = 3 ] || exit 1
+echo $2 |grep -q @ || exit 2
+. /usr/libexec/vmail/mail.common
+
+N="$1"
+U="`echo $2 |cut -d@ -f1`"
+D="`echo $2 |cut -d@ -f2`"
+if [ "`echo $3 |cut -b1`" = "{" ]; then
+	P="$3"
+else
+	P="{sha256}`echo -n $3 |openssl dgst -sha256 -binary |openssl enc -base64`"
+fi
+echo "INSERT INTO users(c_uid,c_name,c_password,c_cn,mail,domain) VALUES('$U@$D','$U@$D','$P','$N','$U@$D','$D');" |$DB_CMD
+
+. /usr/libexec/vmail/adddomain
+
+mkdir -p /srv/mail/$D/$U/mail
+chown vmail:vmail /srv/mail
+chown vmail:vmail /srv/mail/$D
+chown -R vmail:vmail /srv/mail/$D/$U
+
+. /usr/libexec/vmail/mail.cleanup

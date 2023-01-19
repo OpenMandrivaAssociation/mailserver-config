@@ -1,0 +1,6 @@
+driver = pgsql
+connect = host=localhost dbname=mail user=mailro password=@DBPASS@
+default_pass_scheme = SHA256
+password_query = SELECT c_password AS password, c_uid AS username, domain FROM users WHERE c_uid = '%n@%d'
+user_query = SELECT '/srv/mail/%d/%n' as home, 'vmail' as uid, 'vmail' as gid FROM users WHERE c_uid = '%n@%d'
+iterate_query = SELECT c_uid AS username, domain FROM users

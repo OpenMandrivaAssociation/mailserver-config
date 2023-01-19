@@ -1,0 +1,6 @@
+#!/bin/sh
+. /usr/libexec/vmail/mail.common
+
+echo "SELECT * FROM aliases;" |$DB_CMD
+
+. /usr/libexec/vmail/mail.cleanup

@@ -1,0 +1,28 @@
+DATABASE=postgres
+
+[ -e /etc/vmail.settings ] && . /etc/vmail.settings
+
+SHORTDB="$DATABASE"
+unset INIT
+unset POSTINIT
+
+if [ "$DATABASE" = "mysql" ]; then
+	if [ "$MAIL_DBROOT" = "true" ]; then
+		DB_CMD="mysql -p"
+	else
+		DB_CMD="mysql -u mail mail --password=$DBPASS"
+	fi
+elif [ "$DATABASE" = "postgres" ]; then
+	SHORTDB=pgsql
+	if [ "$MAIL_DBROOT" = "true" ]; then
+		DB_CMD="psql -U postgres"
+	else
+		export PGPASSWORD="$DBPASS"
+		DB_CMD="psql -U mail -d mail"
+	fi
+elif [ "$DATABASE" = "sqlite" ]; then
+	DB_CMD="sqlite /srv/mail/users.db"
+else
+	echo "Invalid database setting in /etc/vmail.settings: $DATABASE" >&2
+	exit 1
+fi
