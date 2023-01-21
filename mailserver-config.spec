@@ -153,4 +153,6 @@ install -c -m 644 %{S:601} %{buildroot}%{_sysconfdir}/nginx/rspamd.conf
 %{_datadir}/dovecot/sieve/*.sh
 %{_sysusersdir}/vmail.conf
 %dir %attr(0755,vmail,vmail) /srv/mail
-/srv/mail/sieve
+%dir %attr(0755,vmail,vmail) /srv/mail/sieve
+%dir %attr(0755,vmail,vmail) /srv/mail/sieve/global
+%attr(0644,vmail,vmail) /srv/mail/sieve/global/*.sieve
