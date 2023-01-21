@@ -6,6 +6,7 @@ server {
 	listen 80;
 	server_name $D;
 	include sogo.conf;
+	include rspamd.conf;
 }
 EOF
 	if ! [ -d /etc/letsencrypt/live/$D ]; then

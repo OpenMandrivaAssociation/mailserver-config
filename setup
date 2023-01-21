@@ -62,6 +62,12 @@ sed -i -E "s,^(connect.*password=)(.*),\1$DBPASS," /etc/dovecot/conf.d/dovecot-s
 sed -i -E "s,(viewURL.*mail:).*(@localhost.*),\1$DBPASS\2," /etc/sogo/sogo.conf
 sed -i -E "s,(.*[=,])([[:space:]]*)([a-zA-Z]*)(:/etc/postfix/sql-.*),\1$SHORTDB\4,g" /etc/postfix/main.cf
 
+if ! [ -e /etc/rspamd/local.d/worker-controller.inc ]; then
+	echo "Enter the password you would like to for spam filter administration"
+	SPAMPW="$(rspamadm pw)"
+	echo "password = \"$SPAMPW\";" >/etc/rspamd/local.d/worker-controller.inc
+fi
+
 systemctl stop sogo
 systemctl stop postfix
 systemctl stop dovecot

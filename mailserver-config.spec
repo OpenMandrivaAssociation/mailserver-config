@@ -64,6 +64,7 @@ Source508: adddomain
 Source509: mail.cleanup
 # For nginx
 Source600: nginx-sogo.conf
+Source601: nginx-rspamd.conf
 BuildArch: noarch
 Summary: Config files for a complete mail server
 URL: https://openmandriva.org/
@@ -132,6 +133,7 @@ install -c -m 755 %{S:508} %{buildroot}%{_libexecdir}/vmail/
 mkdir -p %{buildroot}%{_sysconfdir}/dovecot/sni.d
 mkdir -p %{buildroot}%{_sysconfdir}/nginx/
 install -c -m 644 %{S:600} %{buildroot}%{_sysconfdir}/nginx/sogo.conf
+install -c -m 644 %{S:601} %{buildroot}%{_sysconfdir}/nginx/rspamd.conf
 
 %pre
 %sysusers_create_package vmail %{S:400}
@@ -145,6 +147,7 @@ install -c -m 644 %{S:600} %{buildroot}%{_sysconfdir}/nginx/sogo.conf
 %config %{_sysconfdir}/sogo/sogo.conf
 %config %{_sysconfdir}/vmail.settings
 %config %{_sysconfdir}/nginx/sogo.conf
+%config %{_sysconfdir}/nginx/rspamd.conf
 %{_libexecdir}/vmail
 %{_datadir}/dovecot/sieve/*.sh
 %{_sysusersdir}/vmail.conf
