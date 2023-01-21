@@ -83,6 +83,7 @@ Requires: cyrus-sasl
 Requires: memcached
 Requires: postgresql postgresql-server
 Requires: nginx
+Requires: opendkim
 Requires: certbot
 # Versioned to match known working postfix and dovecot versions
 Provides: postfix-config = 3.7.3-4

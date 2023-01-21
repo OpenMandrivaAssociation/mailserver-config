@@ -82,6 +82,7 @@ systemctl enable --now dovecot
 systemctl enable --now postfix
 systemctl enable --now sogo
 systemctl enable --now nginx
+systemctl enable --now opendkim
 systemctl enable certbot-renew.timer
 
 . /usr/libexec/vmail/mail.cleanup
