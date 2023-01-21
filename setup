@@ -84,5 +84,8 @@ systemctl enable --now sogo
 systemctl enable --now nginx
 systemctl enable --now opendkim
 systemctl enable certbot-renew.timer
+systemctl enable sogo-email-alarms.timer
+systemctl enable sogo-expire-sessions.timer
+systemctl enable sogo-update-autoreply.timer
 
 . /usr/libexec/vmail/mail.cleanup
