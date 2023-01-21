@@ -105,3 +105,6 @@ postscreen_greet_action = enforce
 
 recipient_delimiter = +
 non_smtpd_milters = inet:127.0.0.1:11332,inet:127.0.0.1:8891
+
+# Make sure opendkim has an opportunity to sign bounces
+internal_mail_filter_classes = bounce
