@@ -41,6 +41,7 @@ Source124: auth-static.conf.ext
 Source125: auth-system.conf.ext
 Source126: auth-vpopmail.conf.ext
 Source127: dovecot-sql.conf.ext
+Source128: master.sieve
 # For rspamd
 Source200: rspamd-learn-spam.sh
 Source201: rspamd-learn-ham.sh
@@ -49,6 +50,7 @@ Source203: rspamd-learn-ham.sieve
 Source204: spam-global.sieve
 # For sogo
 Source300: sogo.conf
+Source301: sieve.creds
 # Users
 Source400: vmail.sysusers
 # Configuration tools (command line)
@@ -112,12 +114,13 @@ install -c -m 644 %{S:0} %{S:1} %{S:2} %{S:3} %{S:4} %{S:5} %{S:6} %{S:7} %{S:8}
 mkdir -p %{buildroot}%{_sysconfdir}/dovecot/conf.d
 install -c -m 644 %{S:100} %{buildroot}%{_sysconfdir}/dovecot/
 install -c -m 644 %{S:101} %{S:102} %{S:103} %{S:104} %{S:105} %{S:106} %{S:107} %{S:108} %{S:109} %{S:110} %{S:111} %{S:112} %{S:113} %{S:114} %{S:115} %{S:116} %{S:117} %{S:118} %{S:119} %{S:120} %{S:121} %{S:122} %{S:123} %{S:124} %{S:125} %{S:126} %{S:127} %{buildroot}%{_sysconfdir}/dovecot/conf.d/
+install -c -m 644 %{S:128} %{buildroot}%{_sysconfdir}/dovecot/
 mkdir -p %{buildroot}/srv/mail/sieve/global
 install -c -m 644 %{S:202} %{S:203} %{S:204} %{buildroot}/srv/mail/sieve/global/
 mkdir -p %{buildroot}%{_datadir}/dovecot/sieve
 install -c -m 755 %{S:200} %{S:201} %{buildroot}%{_datadir}/dovecot/sieve
 mkdir -p %{buildroot}%{_sysconfdir}/sogo
-install -c -m 644 %{S:300} %{buildroot}%{_sysconfdir}/sogo/
+install -c -m 644 %{S:300} %{S:301} %{buildroot}%{_sysconfdir}/sogo/
 mkdir -p %{buildroot}%{_sysusersdir}
 install -c -m 644 %{S:400} %{buildroot}%{_sysusersdir}/vmail.conf
 mkdir -p %{buildroot}%{_libexecdir}/vmail
@@ -144,8 +147,10 @@ install -c -m 644 %{S:601} %{buildroot}%{_sysconfdir}/nginx/rspamd.conf
 %config %{_sysconfdir}/postfix/*.cf
 %config %{_sysconfdir}/dovecot/dovecot.conf
 %config %{_sysconfdir}/dovecot/conf.d/*
+%{_sysconfdir}/dovecot/master.sieve
 %dir %{_sysconfdir}/dovecot/sni.d
 %config %{_sysconfdir}/sogo/sogo.conf
+%{_sysconfdir}/sogo/sieve.creds
 %config %{_sysconfdir}/vmail.settings
 %config %{_sysconfdir}/nginx/sogo.conf
 %config %{_sysconfdir}/nginx/rspamd.conf
