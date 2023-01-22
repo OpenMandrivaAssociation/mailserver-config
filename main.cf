@@ -56,6 +56,8 @@ mua_helo_restrictions = permit_mynetworks,reject_non_fqdn_hostname,reject_invali
 # to prevent people from faking someone else's local address. 
 # This requires getting smtpd_sender_login_maps right. (Especially for corner
 # cases with aliases aliasing each other etc.)
+# That should be something along the lines of
+# SELECT c_uid FROM users WHERE c_uid='%s' UNION SELECT source AS c_uid FROM aliases WHERE destination='%s'
 mua_sender_restrictions = permit_mynetworks,reject_non_fqdn_sender,permit_sasl_authenticated,reject
 mua_client_restrictions = permit_mynetworks,permit_sasl_authenticated
 
