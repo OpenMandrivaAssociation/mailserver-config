@@ -1,5 +1,5 @@
 Name: mailserver-config
-Version: 23.01
+Version: 23.03
 Release: 1
 # For postfix
 Source0: main.cf
@@ -84,7 +84,7 @@ Requires: redis
 Requires: cyrus-sasl
 Requires: memcached
 Requires: postgresql postgresql-server
-Requires: nginx
+Requires: (nginx or nginx-quic)
 Requires: opendkim
 Requires: certbot
 # Versioned to match known working postfix and dovecot versions
