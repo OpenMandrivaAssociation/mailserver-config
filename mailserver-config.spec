@@ -1,6 +1,6 @@
 Name: mailserver-config
 Version: 23.03
-Release: 1
+Release: 2
 # For postfix
 Source0: main.cf
 Source1: master.cf
