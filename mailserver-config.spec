@@ -1,6 +1,6 @@
 Name: mailserver-config
-Version: 23.03
-Release: 2
+Version: 25.09
+Release: 1
 # For postfix
 Source0: main.cf
 Source1: master.cf
@@ -26,22 +26,18 @@ Source109: 20-imap.conf
 Source110: 20-lmtp.conf
 Source111: 20-pop3.conf
 Source112: 90-acl.conf
-Source113: 90-plugin.conf
-Source114: 90-quota.conf
-Source115: 90-sieve.conf
-Source116: 91-antispam.conf
-Source117: auth-checkpassword.conf.ext
-Source118: auth-deny.conf.ext
-Source119: auth-dict.conf.ext
-Source120: auth-ldap.conf.ext
-Source121: auth-master.conf.ext
-Source122: auth-passwdfile.conf.ext
-Source123: auth-sql.conf.ext
-Source124: auth-static.conf.ext
-Source125: auth-system.conf.ext
-Source126: auth-vpopmail.conf.ext
-Source127: dovecot-sql.conf.ext
-Source128: master.sieve
+Source113: 90-quota.conf
+Source114: 90-sieve.conf
+Source115: 91-antispam.conf
+Source116: auth-deny.conf.ext
+Source117: auth-ldap.conf.ext
+Source118: auth-master.conf.ext
+Source119: auth-passwdfile.conf.ext
+Source120: auth-sql.conf.ext
+Source121: auth-static.conf.ext
+Source122: auth-system.conf.ext
+Source123: dovecot-sql.conf.ext
+Source124: master.sieve
 # For rspamd
 Source200: rspamd-learn-spam.sh
 Source201: rspamd-learn-ham.sh
@@ -88,8 +84,8 @@ Requires: (nginx or nginx-quic)
 Requires: opendkim
 Requires: certbot
 # Versioned to match known working postfix and dovecot versions
-Provides: postfix-config = 3.7.3-4
-Provides: dovecot-config = 2.3.20-1
+Provides: postfix-config = 3.10.4-1
+Provides: dovecot-config = 2.4.1.4-1
 
 %description
 Config files for a complete mail server featuring SMTP,
@@ -113,8 +109,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/postfix
 install -c -m 644 %{S:0} %{S:1} %{S:2} %{S:3} %{S:4} %{S:5} %{S:6} %{S:7} %{S:8} %{S:9} %{buildroot}%{_sysconfdir}/postfix/
 mkdir -p %{buildroot}%{_sysconfdir}/dovecot/conf.d
 install -c -m 644 %{S:100} %{buildroot}%{_sysconfdir}/dovecot/
-install -c -m 644 %{S:101} %{S:102} %{S:103} %{S:104} %{S:105} %{S:106} %{S:107} %{S:108} %{S:109} %{S:110} %{S:111} %{S:112} %{S:113} %{S:114} %{S:115} %{S:116} %{S:117} %{S:118} %{S:119} %{S:120} %{S:121} %{S:122} %{S:123} %{S:124} %{S:125} %{S:126} %{S:127} %{buildroot}%{_sysconfdir}/dovecot/conf.d/
-install -c -m 644 %{S:128} %{buildroot}%{_sysconfdir}/dovecot/
+install -c -m 644 %{S:101} %{S:102} %{S:103} %{S:104} %{S:105} %{S:106} %{S:107} %{S:108} %{S:109} %{S:110} %{S:111} %{S:112} %{S:113} %{S:114} %{S:115} %{S:116} %{S:117} %{S:118} %{S:119} %{S:120} %{S:121} %{S:122} %{S:123} %{buildroot}%{_sysconfdir}/dovecot/conf.d/
+install -c -m 644 %{S:124} %{buildroot}%{_sysconfdir}/dovecot/
 mkdir -p %{buildroot}/srv/mail/sieve/global
 install -c -m 644 %{S:202} %{S:203} %{S:204} %{buildroot}/srv/mail/sieve/global/
 mkdir -p %{buildroot}%{_datadir}/dovecot/sieve

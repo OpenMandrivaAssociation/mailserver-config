@@ -1,6 +1,6 @@
 driver = pgsql
-connect = host=localhost dbname=mail user=mailro password=@DBPASS@
+connect = host=localhost dbname=mail user=mailro password=m4i7p4s$w0rD
 default_pass_scheme = SHA256
-password_query = SELECT c_password AS password, c_uid AS username, domain FROM users WHERE c_uid = '%n@%d'
-user_query = SELECT '/srv/mail/%d/%n' as home, 'vmail' as uid, 'vmail' as gid FROM users WHERE c_uid = '%n@%d'
-iterate_query = SELECT c_uid AS username, domain FROM users
+password_query = SELECT 488 as uid, 488 as gid, c_password AS password, c_uid AS user, domain FROM users WHERE c_uid = '%{user}'
+user_query = SELECT 488 as uid, 488 as gid, '/srv/mail/%{user|domain}/%{user|username}' as home, 'vmail' as uid, 'vmail' as gid FROM users WHERE c_uid = '%{user}'
+iterate_query = SELECT 488 as uid, 488 as gid, c_uid AS user, domain FROM users

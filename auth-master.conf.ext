@@ -5,12 +5,12 @@
 # <doc/wiki/Authentication.MasterUsers.txt>
 
 # Example master user passdb using passwd-file. You can use any passdb though.
-passdb {
-  driver = passwd-file
-  master = yes
-  args = /etc/dovecot/master-users
-
-  # Unless you're using PAM, you probably still want the destination user to
-  # be looked up from passdb that it really exists. pass=yes does that.
-  pass = yes
-}
+#passdb master-passwd-file {
+#	driver = passwd-file
+#	master = yes
+#	passwd_file_path = /etc/dovecot/master-users
+#
+# Unless you're using PAM, you probably still want the destination user to
+# be looked up from passdb that it really exists. pass=yes does that.
+#	pass = yes
+#}

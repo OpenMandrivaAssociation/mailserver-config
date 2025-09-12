@@ -6,10 +6,10 @@
 # checked first.
 
 # Example deny passdb using passwd-file. You can use any passdb though.
-passdb {
-  driver = passwd-file
-  deny = yes
+passdb deny {
+	driver = passwd-file
+	deny = yes
 
-  # File contains a list of usernames, one per line
-  args = /etc/dovecot/deny-users
+	# File contains a list of usernames, one per line
+	passwd_file_path = /etc/dovecot/deny-users
 }

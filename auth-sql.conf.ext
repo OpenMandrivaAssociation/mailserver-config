@@ -1,9 +1,22 @@
-mail_location = mdbox:~/mail
-passdb {
-	driver = sql
-	args = /etc/dovecot/conf.d/dovecot-sql.conf.ext
+mail_driver = mdbox
+mail_path = ~/mail
+
+sql_driver = pgsql
+pgsql localhost {
+	parameters {
+		dbname = mail
+		user = mailro
+		password = m4i7p4s$w0rD
+	}
 }
-userdb {
-	driver = static
-	args = uid=vmail gid=vmail home=/srv/mail/%d/%n
+
+passdb sql {
+	default_password_scheme = SHA256
+	# uid/gid 488 is the vmail user
+	query = SELECT 488 as uid, 488 as gid, c_uid AS user, c_password AS password, '/srv/mail/%{user|domain}/%{user|username}' AS home, domain FROM users WHERE c_uid = '%{user}'
+}
+
+userdb sql {
+	query = SELECT 488 as uid, 488 as gid, '/srv/mail/%{user|domain}/%{user|username}' as home, domain FROM users WHERE c_uid = '%{user}'
+	iterate_query = SELECT 488 as uid, 488 as gid, c_uid AS user, domain FROM users
 }
