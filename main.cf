@@ -61,7 +61,7 @@ mua_helo_restrictions = permit_mynetworks,reject_non_fqdn_hostname,reject_invali
 mua_sender_restrictions = permit_mynetworks,reject_non_fqdn_sender,permit_sasl_authenticated,reject
 mua_client_restrictions = permit_mynetworks,permit_sasl_authenticated
 
-smtpd_milters = inet:127.0.0.1:11332,inet:127.0.0.1:8891
+smtpd_milters = unix:/run/rspamd/proxy.sock
 milter_default_action = accept
 milter_protocol = 6
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_type} {auth_authen}
@@ -101,12 +101,12 @@ smtputf8_enable = yes
 compatibility_level = 2
 
 postscreen_dnsbl_threshold = 2
-postscreen_dnsbl_sites = sbl.spamhaus.org*1 xbl.spamhaus.org*1 dbl.spamhaus.org*1 bl.spamcop.net*1 b.barracudacentral.org*1 spam.spamrats.com*1
+postscreen_dnsbl_sites = sbl.spamhaus.org=127.0.0.[2..3]*1 xbl.spamhaus.org=127.0.0.4*1 bl.spamcop.net*1 b.barracudacentral.org*1 spam.spamrats.com*1
 postscreen_dnsbl_action = enforce
 postscreen_greet_action = enforce
 
 recipient_delimiter = +
-non_smtpd_milters = inet:127.0.0.1:11332,inet:127.0.0.1:8891
+non_smtpd_milters = unix:/run/rspamd/proxy.sock
 
 # Make sure opendkim has an opportunity to sign bounces
 internal_mail_filter_classes = bounce
