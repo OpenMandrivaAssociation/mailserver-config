@@ -44,7 +44,6 @@ Source201: rspamd-learn-ham.sh
 Source202: rspamd-learn-spam.sieve
 Source203: rspamd-learn-ham.sieve
 Source204: spam-global.sieve
-Source205: dkim_signing.conf
 # For sogo
 Source300: sogo.conf
 Source301: sieve.creds
@@ -113,8 +112,6 @@ install -c -m 644 %{S:101} %{S:102} %{S:103} %{S:104} %{S:105} %{S:106} %{S:107}
 install -c -m 644 %{S:124} %{buildroot}%{_sysconfdir}/dovecot/
 mkdir -p %{buildroot}/srv/mail/sieve/global
 install -c -m 644 %{S:202} %{S:203} %{S:204} %{buildroot}/srv/mail/sieve/global/
-mkdir -p %{buildroot}%{_sysconfdir}/rspamd/modules.d/
-install -c -m 644 %{S:205} %{buildroot}%{_sysconfdir}/rspamd/modules.d/
 mkdir -p %{buildroot}%{_datadir}/dovecot/sieve
 install -c -m 755 %{S:200} %{S:201} %{buildroot}%{_datadir}/dovecot/sieve
 mkdir -p %{buildroot}%{_sysconfdir}/sogo
@@ -159,4 +156,3 @@ install -c -m 644 %{S:601} %{buildroot}%{_sysconfdir}/nginx/rspamd.conf
 %dir %attr(0755,vmail,vmail) /srv/mail/sieve
 %dir %attr(0755,vmail,vmail) /srv/mail/sieve/global
 %attr(0644,vmail,vmail) /srv/mail/sieve/global/*.sieve
-%config %{_sysconfdir}/rspamd/modules.d/dkim_signing.conf
